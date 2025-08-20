@@ -1,0 +1,355 @@
+# **Revisão Completa de Flutter e Dart**
+
+> Guia prático para entender os fundamentos de **Dart** e os conceitos principais do **Flutter** até o gerenciamento de estado.
+
+---
+
+## **1. Fundamentos de Dart**
+
+Dart é a linguagem usada no Flutter. É fortemente tipada, moderna e suporta **programação assíncrona**.
+
+### **1.1. Variáveis e Tipagem**
+
+```dart
+void main() {
+  String nome = "Gabriel";
+  int idade = 17;
+  double altura = 1.78;
+  bool estudante = true;
+
+  print("Nome: $nome, Idade: $idade, Altura: $altura, Estudante: $estudante");
+}
+```
+
+* `var` → Inferência de tipo.
+* `final` → Valor imutável após atribuição.
+* `const` → Constante em **tempo de compilação**.
+
+---
+
+### **1.2. Estruturas de Controle**
+
+```dart
+void main() {
+  for (int i = 0; i < 3; i++) {
+    print("Contagem: $i");
+  }
+
+  int idade = 18;
+  if (idade >= 18) {
+    print("Maior de idade");
+  } else {
+    print("Menor de idade");
+  }
+}
+```
+
+---
+
+### **1.3. Funções**
+
+```dart
+int soma(int a, int b) {
+  return a + b;
+}
+
+void main() {
+  print(soma(5, 3));
+}
+```
+
+---
+
+### **1.4. Classes e Objetos**
+
+```dart
+class Pessoa {
+  String nome;
+  int idade;
+
+  Pessoa(this.nome, this.idade);
+
+  void apresentar() {
+    print("Olá! Meu nome é $nome e tenho $idade anos.");
+  }
+}
+
+void main() {
+  var p = Pessoa("Gabriel", 17);
+  p.apresentar();
+}
+```
+
+---
+
+### **1.5. Assíncronismo (Future e async/await)**
+
+```dart
+Future<String> buscarDados() async {
+  await Future.delayed(Duration(seconds: 2));
+  return "Dados carregados!";
+}
+
+void main() async {
+  print("Buscando...");
+  String resultado = await buscarDados();
+  print(resultado);
+}
+```
+
+---
+
+## **2. Widgets no Flutter**
+
+Tudo no Flutter é um **widget**. Eles podem ser **visuais** (Text, Button, Container) ou **estruturais** (Scaffold, Column, Row).
+
+### **2.1. StatelessWidget**
+
+Não guarda estado interno.
+
+```dart
+class MeuWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text("Olá, Gabriel!"),
+    );
+  }
+}
+```
+
+### **2.2. StatefulWidget**
+
+Mantém e atualiza estado durante a execução.
+
+```dart
+class Contador extends StatefulWidget {
+  @override
+  State<Contador> createState() => _ContadorState();
+}
+
+class _ContadorState extends State<Contador> {
+  int contador = 0;
+
+  void incrementar() {
+    setState(() => contador++);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Contador: $contador"),
+        ElevatedButton(
+          onPressed: incrementar,
+          child: Text("Adicionar"),
+        )
+      ],
+    );
+  }
+}
+```
+
+---
+
+## **3. Scaffold no Flutter**
+
+O **Scaffold** fornece a estrutura básica de uma tela. É usado para criar layouts com **AppBar**, **Body**, **Drawer** e **FloatingActionButton**.
+
+```dart
+import 'package:flutter/material.dart';
+
+class MinhaTela extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Minha Página"),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: Text("Olá, Gabriel!"),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print("Botão pressionado!");
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+```
+
+---
+
+## **4. Usando Botões no Flutter**
+
+O Flutter oferece diversos botões:
+
+### **4.1. ElevatedButton**
+
+```dart
+ElevatedButton(
+  onPressed: () {
+    print("Botão clicado!");
+  },
+  child: Text("Clique aqui"),
+)
+```
+
+### **4.2. TextButton**
+
+```dart
+TextButton(
+  onPressed: () {
+    print("Botão de texto");
+  },
+  child: Text("Cancelar"),
+)
+```
+
+### **4.3. IconButton**
+
+```dart
+IconButton(
+  onPressed: () {
+    print("Ícone pressionado");
+  },
+  icon: Icon(Icons.favorite),
+)
+```
+
+### **4.4. FloatingActionButton**
+
+```dart
+FloatingActionButton(
+  onPressed: () {
+    print("Ação flutuante");
+  },
+  child: Icon(Icons.add),
+)
+```
+
+---
+
+## **5. Navegação Entre Telas**
+
+Para mudar de página:
+
+```dart
+Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => SegundaTela()),
+);
+```
+
+Para voltar:
+
+```dart
+Navigator.pop(context);
+```
+
+---
+
+## **6. Gerenciamento de Estado**
+
+Gerenciar estado é essencial para atualizar a interface. Existem várias abordagens:
+
+### **6.1. Usando setState (Básico)**
+
+```dart
+class Contador extends StatefulWidget {
+  @override
+  State<Contador> createState() => _ContadorState();
+}
+
+class _ContadorState extends State<Contador> {
+  int contador = 0;
+
+  void incrementar() {
+    setState(() {
+      contador++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Contador")),
+      body: Center(
+        child: Text("Contador: $contador"),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: incrementar,
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+```
+
+### **6.2. Usando Provider (Recomendado para projetos maiores)**
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+class ContadorProvider with ChangeNotifier {
+  int contador = 0;
+
+  void incrementar() {
+    contador++;
+    notifyListeners();
+  }
+}
+
+void main() {
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ContadorProvider(),
+      child: MeuApp(),
+    ),
+  );
+}
+
+class MeuApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: Text("Provider Exemplo")),
+        body: Center(
+          child: Consumer<ContadorProvider>(
+            builder: (context, contadorProvider, _) {
+              return Text("Contador: ${contadorProvider.contador}");
+            },
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => context.read<ContadorProvider>().incrementar(),
+          child: Icon(Icons.add),
+        ),
+      ),
+    );
+  }
+}
+```
+
+---
+
+## **Resumo Geral**
+
+| Conceito                | Importância | Dificuldade |
+| ----------------------- | ----------- | ----------- |
+| Dart Básico             | ⭐⭐⭐⭐        | Fácil       |
+| Widgets                 | ⭐⭐⭐⭐⭐       | Fácil       |
+| Scaffold                | ⭐⭐⭐⭐        | Fácil       |
+| Botões                  | ⭐⭐⭐⭐        | Fácil       |
+| Navegação               | ⭐⭐⭐⭐        | Médio       |
+| Gerenciamento de Estado | ⭐⭐⭐⭐⭐       | Médio       |
+
+---
+
+**Dica:** Comece praticando com **StatelessWidget** e **StatefulWidget**. Depois, explore **Provider** ou **Riverpod** para projetos mais complexos.
